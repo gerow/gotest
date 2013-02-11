@@ -17,7 +17,11 @@ And then adding:
 ```go
 import "github.com/gerow/gotest"
 ```
-to your testing code.
+to your testing code.  If you want to update later just call this from your terminal:
+
+```bash
+go get -u github.com/gerow/gotest
+```
 
 How to use
 ==========
