@@ -3,7 +3,7 @@ gotest
 
 Some useful go testing tools.  (Actually only a deep equality checker/reporter for now).
 
-How to use
+How to install
 ======
 
 If you have your gopath setup this is as easy as calling this from your terminal:
@@ -18,6 +18,9 @@ And then adding:
 import "github.com/gerow/gotest"
 ```
 to your testing code.
+
+How to use
+==========
 
 Great, now assume you want to assert a deep equality between two things (let's call them foo and bar) and that this is within a test function so you have a *testing.T called t.  In order to assert deep equality between a and b simply call:
 
