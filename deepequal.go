@@ -28,6 +28,8 @@ type visit struct {
 // comparisons that have already been seen, which allows short circuiting on
 // recursive types.
 func deepValueEqual(v1, v2 reflect.Value, visited map[uintptr]*visit, depth int, t *testing.T) (b bool) {
+        v1i := v1.Interface()
+        v2i := v2.Interface()
 	if !v1.IsValid() || !v2.IsValid() {
                 if v1.IsValid() != v2.IsValid() {
                   t.Errorf("%v and %v are unequal because one is invalid and the other is not", v1, v2)
@@ -71,26 +73,28 @@ func deepValueEqual(v1, v2 reflect.Value, visited map[uintptr]*visit, depth int,
 	switch v1.Kind() {
 	case reflect.Array:
 		if v1.Len() != v2.Len() {
-                        t.Errorf("%v and %v are Arrays of different length (%d and %d)", v1, v2, v1.Len(), v2.Len())
+                        t.Errorf("%v and %v are Arrays of different length (%d and %d)", v1i, v2i, v1.Len(), v2.Len())
 			return false
 		}
 		for i := 0; i < v1.Len(); i++ {
 			if !deepValueEqual(v1.Index(i), v2.Index(i), visited, depth+1, t) {
+                                t.Errorf("%v and %v are arrays with differing elements", v1i, v2i)
 				return false
 			}
 		}
 		return true
 	case reflect.Slice:
 		if v1.IsNil() != v2.IsNil() {
-                        t.Errorf("%v and %v Slices but one is nil", v1, v2)
+                        t.Errorf("%v and %v Slices but one is nil", v1i, v2i)
 			return false
 		}
 		if v1.Len() != v2.Len() {
-                        t.Errorf("%v and %v are Slices of different length (%d and %d)", v1, v2, v1.Len(), v2.Len())
+                        t.Errorf("%v and %v are Slices of different length (%d and %d)", v1i, v2i, v1.Len(), v2.Len())
 			return false
 		}
 		for i := 0; i < v1.Len(); i++ {
 			if !deepValueEqual(v1.Index(i), v2.Index(i), visited, depth+1, t) {
+                                t.Errorf("%v and %v are slices with differing elements", v1i, v2i)
 				return false
 			}
 		}
@@ -98,7 +102,7 @@ func deepValueEqual(v1, v2 reflect.Value, visited map[uintptr]*visit, depth int,
 	case reflect.Interface:
 		if v1.IsNil() || v2.IsNil() {
                         if v1.IsNil() != v2.IsNil() {
-                          t.Errorf("%v and %v are Interfaces but one is nil", v1, v2)
+                          t.Errorf("%v and %v are Interfaces but one is nil", v1i, v2i)
                         }
 			return v1.IsNil() == v2.IsNil()
 		}
@@ -108,21 +112,23 @@ func deepValueEqual(v1, v2 reflect.Value, visited map[uintptr]*visit, depth int,
 	case reflect.Struct:
 		for i, n := 0, v1.NumField(); i < n; i++ {
 			if !deepValueEqual(v1.Field(i), v2.Field(i), visited, depth+1, t) {
+                                t.Errorf("%v and %v are structs with differing elements", v1i, v2i)
 				return false
 			}
 		}
 		return true
 	case reflect.Map:
 		if v1.IsNil() != v2.IsNil() {
-                        t.Errorf("%v and %v are Maps but one is nil", v1, v2)
+                        t.Errorf("%v and %v are Maps but one is nil", v1i, v2i)
 			return false
 		}
 		if v1.Len() != v2.Len() {
-                        t.Errorf("%v and %v are Maps of different length (%d and %d)", v1, v2, v1.Len(), v2.Len())
+                        t.Errorf("%v and %v are Maps of different length (%d and %d)", v1i, v2i, v1.Len(), v2.Len())
 			return false
 		}
 		for _, k := range v1.MapKeys() {
 			if !deepValueEqual(v1.MapIndex(k), v2.MapIndex(k), visited, depth+1, t) {
+                                t.Errorf("%v and %v are maps with differing elements", v1i, v2i)
 				return false
 			}
 		}
@@ -132,7 +138,7 @@ func deepValueEqual(v1, v2 reflect.Value, visited map[uintptr]*visit, depth int,
 			return true
 		}
 		// Can't do better than this:
-                t.Errorf("%v and %v are functions but they aren't both nil", v1, v2)
+                t.Errorf("%v and %v are functions but they aren't both nil", v1i, v2i)
 		return false
 	default:
 		// Normal equality suffices
