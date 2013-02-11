@@ -6,7 +6,7 @@ Some useful go testing tools.  (Actually only a deep equality checker/reporter f
 How to use
 ======
 
-If you have your gopath setup this is as easy as calling:
+If you have your gopath setup this is as easy as calling this from your terminal:
 
 ```bash
 go get github.com/gerow/gotest
