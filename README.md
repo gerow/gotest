@@ -21,7 +21,10 @@ to your testing code.
 
 How to use
 ==========
+Excellent, you have gotest installed! Right now there's only one thing that it does: deep equality checking where differences are noted as calls to the Errorf method of testing.T. This is mostly aped from the actual DeepEqual implementation at reflect.DeepEqual.  The problem with that one is that it only tells you whether or not two things are equal without telling you exactly what isn't equal. This is great when your tests all pass, but when an equality check fails it's hard to know exactly what went wrong.
 
+AssertDeepEqual
+---------------
 Great, now assume you want to assert a deep equality between two things (let's call them foo and bar) and that this is within a test function so you have a *testing.T called t.  In order to assert deep equality between a and b simply call:
 
 ```go
