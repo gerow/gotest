@@ -15,7 +15,7 @@ go get github.com/gerow/gotest
 And then adding:
 
 ```go
-import "github.com/gerow/gotest
+import "github.com/gerow/gotest"
 ```
 to your testing code.
 
