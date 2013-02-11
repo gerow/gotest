@@ -36,7 +36,7 @@ gotest.AssertDeepEqual(a, b, t)
 ```
 The AssertDeepEqual call will recursively walk your "things" (interface{}) looking for differences.  On the first difference it spots it will begin making a series of calls to t.Errorf starting with the most specific difference and working its way up to the most general difference.
 
-An actual use can be found [here](https://github.com/gerow/boop/blob/dev/src/boop/boop_config_test.go).  One function from there is reproduced below:
+An actual use can be found [here](https://github.com/gerow/boop/blob/dev/src/boop/boop_config_test.go).  One function from there is reproduced below. In this case we are testing our ability to correctly load a json based config from a file.  We do this by producing the expected struct, loading a struct using the function we are trying to teset, and then using gotest.AssertDeepEqual to make sure they are the same. If they aren't the same gotest.AssertDeepEqual will make the approprite calls to t.Errorf.
 ```go
 func TestLoadConfigFromFile(t *testing.T) {
   t.Logf("Starting TestLoadConfigFromFileWithDefaults")
