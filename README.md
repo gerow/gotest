@@ -1,7 +1,7 @@
 gotest
 ======
 
-Some useful go testing tools.  (Actually only a deep equality checker/reporter for now).
+Some useful go testing tools.  (Actually only a deep equality checker/reporter for now).  After writing this I found out there is another (probably better) library for testing in go.  You might want to check it out [here](http://labix.org/gocheck).
 
 How to install
 ======
